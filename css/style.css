@@ -1,0 +1,873 @@
+@font-face {
+    font-family: 'Saphifen';
+    src: url('../assets/fonts/saphifen.otf') format('opentype');
+    font-display: swap;
+    font-style: normal;
+    font-weight: normal;
+}
+
+/* ==========================================================================
+   1. GLOBAL SYSTEM VARIABLES (Commercial Theming)
+   ========================================================================== */
+:root {
+    --bg-main: #040508;          /* Abyssal Black */
+    --accent-yin: #6600ff;       /* Spectral Purple */
+    --accent-yang: #00ffcc;      /* Soul Stable Cyan */
+    --accent-alert: #ff003c;     /* Classified File Warning Red */
+    --text-primary: #e2e8f0;     /* Spectral Fog White */
+    --text-muted: #8a99ad;       /* Cold Ash Gray */
+    --glass-bg: rgba(10, 12, 22, 0.4); 
+    --glass-border: rgba(102, 0, 255, 0.15);
+    --font-heading: 'Saphifen', 'Georgia', serif;
+    --font-body: 'Segoe UI', system-ui, sans-serif;
+}
+
+/* ==========================================================================
+   2. BASE LAYOUT & RESET
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Subpage Header Standard */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    letter-spacing: 1px;
+}
+
+/* ==========================================================================
+   3. SHIFT-IN & HOVER MICRO-INTERACTIONS
+   ========================================================================== */
+/* Interactive card hover movement */
+.interactive-target {
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), 
+                box-shadow 0.3s ease, 
+                border-color 0.3s ease;
+}
+
+.interactive-target:hover {
+    transform: translateY(-4px) scale(1.01);
+    border-color: var(--accent-yin);
+    box-shadow: 0 10px 30px rgba(102, 0, 255, 0.15);
+}
+
+/* Text Box Slide-In Animations */
+.slide-in-element {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================================================
+   4. STYLIZED AUDIO CONTROL (Horror Variant)
+   ========================================================================== */
+.audio-interface {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+}
+
+/* Persistent creator watermark */
+.creator-watermark {
+    position: fixed;
+    bottom: 28px;
+    left: 28px;
+    z-index: 1000;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 18px 13px 13px;
+    color: var(--text-muted);
+    background: rgba(4, 5, 8, 0.72);
+    border: 1px solid rgba(102, 0, 255, 0.28);
+    border-radius: 4px;
+    box-shadow: 0 5px 24px rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(10px);
+    font-family: var(--font-heading);
+    text-decoration: none;
+    opacity: 0.9;
+    transition: opacity 0.25s ease, transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.creator-watermark-mark {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    color: var(--accent-yang);
+    border: 1px solid var(--accent-yin);
+    background: rgba(102, 0, 255, 0.12);
+    font-size: 1.05rem;
+    letter-spacing: 1.5px;
+    text-shadow: 0 0 8px rgba(0, 255, 204, 0.45);
+}
+
+.creator-watermark-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    line-height: 1;
+}
+
+.creator-watermark-copy small {
+    color: var(--text-muted);
+    font-size: 0.58rem;
+    letter-spacing: 2px;
+}
+
+.creator-watermark-copy strong {
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+}
+
+.creator-watermark:hover,
+.creator-watermark:focus-visible {
+    color: var(--text-primary);
+    opacity: 1;
+    transform: translateY(-3px);
+    border-color: var(--accent-yang);
+    box-shadow: 0 8px 28px rgba(0, 255, 204, 0.12), 0 0 18px rgba(102, 0, 255, 0.2);
+    outline: none;
+}
+
+@media (max-width: 680px) {
+    .creator-watermark {
+        bottom: 14px;
+        left: 14px;
+        padding: 9px;
+    }
+
+    .creator-watermark-copy {
+        display: none;
+    }
+
+    .creator-watermark-mark {
+        width: 42px;
+        height: 42px;
+        font-size: 1rem;
+    }
+}
+
+.horror-audio-btn {
+    background: var(--glass-bg);
+    border: 1px solid var(--accent-yang);
+    color: var(--accent-yang);
+    padding: 12px 24px;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%); /* Angular cuts */
+}
+
+.horror-audio-btn:hover {
+    background: var(--accent-yang);
+    color: var(--bg-main);
+    box-shadow: 0 0 15px var(--accent-yang);
+}
+
+.horror-audio-btn.playing {
+    border-color: var(--accent-yin);
+    color: var(--accent-yin);
+    animation: lowPulse 2s infinite ease-in-out;
+}
+
+.horror-audio-btn.playing:hover {
+    background: var(--accent-yin);
+    color: var(--text-primary);
+    box-shadow: 0 0 15px var(--accent-yin);
+}
+
+@keyframes lowPulse {
+    0% { opacity: 0.8; }
+    50% { opacity: 1; filter: drop-shadow(0 0 5px var(--accent-yin)); }
+    100% { opacity: 0.8; }
+}
+
+/* ==========================================================================
+   5. SPA VIEW WRAPPERS & GLASS NAVIGATION
+   ========================================================================== */
+.global-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background: rgba(4, 5, 8, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--glass-border);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 900;
+}
+
+.system-title {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    text-shadow: 0 0 10px rgba(102, 0, 255, 0.5);
+}
+
+.system-title span {
+    color: var(--accent-yin);
+}
+
+.nav-links a {
+    font-family: var(--font-heading);
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-left: 30px;
+    transition: all 0.3s ease;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    color: var(--accent-yang);
+    text-shadow: 0 0 8px rgba(0, 255, 204, 0.4);
+}
+
+/* ==========================================================================
+   6. RAIN LANDING VIEW CORE ARCHITECTURE
+   ========================================================================== */
+.landing-hero {
+    position: relative;
+    width: 100vw;
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 20px;
+    background-color: #020204;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+/* Rain Particle Overlay Grid Canvas */
+.rain-matrix {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    overflow: hidden;
+}
+
+/* Fast foreground rain streaks */
+.rain-matrix::before {
+    content: '';
+    position: absolute;
+    inset: -100% -15% 0;
+    background-image:
+        linear-gradient(105deg, transparent 47%, rgba(214, 231, 255, 0.32) 49%, transparent 51%),
+        linear-gradient(100deg, transparent 48%, rgba(0, 255, 204, 0.17) 49%, transparent 50%);
+    background-size: 48px 140px, 72px 196px;
+    background-position: 0 -560px, 20px -588px;
+    animation: torrentRain 0.62s linear infinite;
+    filter: blur(0.25px);
+    opacity: 0.8;
+    will-change: background-position;
+}
+
+/* Slower, softer rain adds depth without hiding the city. */
+.rain-matrix::after {
+    content: '';
+    position: absolute;
+    inset: -100% -10% 0;
+    background-image: linear-gradient(103deg, transparent 48%, rgba(196, 215, 255, 0.16) 49%, transparent 51%);
+    background-size: 110px 260px;
+    background-position: 35px -520px;
+    animation: distantRain 1.15s linear infinite;
+    opacity: 0.55;
+    will-change: background-position;
+}
+
+@keyframes torrentRain {
+    from { background-position: 0 -560px, 20px -588px; }
+    to { background-position: -48px 0, -52px 0; }
+}
+
+@keyframes distantRain {
+    from { background-position: 35px -520px; }
+    to { background-position: -75px 0; }
+}
+
+/* Ripple distortion wave simulation container */
+.city-backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* CSS paths resolve from the css folder, hence ../assets below. */
+    background-image:
+        linear-gradient(to bottom, rgba(4, 5, 8, 0.22), rgba(4, 5, 8, 0.82)),
+        url('../assets/bg/city.png');
+    animation: lensRipple 8s infinite ease-in-out;
+    will-change: transform, filter;
+}
+
+@keyframes lensRipple {
+    0%, 100% { transform: scale(1); filter: contrast(1) brightness(1); }
+    50% { transform: scale(1.02); filter: contrast(1.1) brightness(0.9) hue-rotate(5deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .rain-matrix::before,
+    .rain-matrix::after,
+    .city-backdrop {
+        animation: none;
+    }
+}
+
+/* Hero Typography Content Block */
+.hero-content {
+    position: relative;
+    z-index: 10;
+    max-width: 800px;
+}
+
+.hero-title {
+    font-size: 4rem;
+    font-weight: 900;
+    color: var(--text-primary);
+    line-height: 1.1;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.hero-title span {
+    color: var(--accent-yin);
+    display: block;
+    font-size: 2.2rem;
+    letter-spacing: 6px;
+    margin-top: 10px;
+}
+
+.hero-description {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 40px;
+}
+
+/* Angled Tech Button */
+.terminal-btn {
+    background: transparent;
+    border: 2px solid var(--accent-yin);
+    color: #ffffff;
+    padding: 18px 45px;
+    font-size: 0.9rem;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+    clip-path: polygon(15px 0%, 100% 0%, calc(100% - 15px) 100%, 0% 100%);
+}
+
+.terminal-btn:hover {
+    background: var(--accent-yin);
+    box-shadow: 0 0 25px var(--accent-yin);
+}
+
+/* ==========================================================================
+   7. COLLAPSIBLE FACTIONS & PERSONNEL ROSTER
+   ========================================================================== */
+.faction-accordion {
+    width: 100%;
+    margin-bottom: 25px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 4px;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+/* Hidden native checkboxes control the collapse state */
+.faction-toggle {
+    display: none;
+}
+
+/* Accordion Clickable Header */
+.faction-trigger {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--accent-yang);
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.3s ease;
+}
+
+.faction-trigger:hover {
+    background: rgba(102, 0, 255, 0.08);
+}
+
+/* Custom dropdown chevron arrow */
+.faction-trigger::after {
+    content: '▲';
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+/* Content wrapper that expands / collapses */
+.faction-drawer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    background: rgba(4, 5, 8, 0.5);
+}
+
+/* CSS Engine: When checkbox is checked, expand the drawer and flip the arrow */
+.faction-toggle:checked ~ .faction-drawer {
+    max-height: 200000px; /* Supports nested faction, commander, and ghost dossiers */
+    border-top: 1px solid rgba(102, 0, 255, 0.1);
+}
+
+.faction-toggle:checked ~ .faction-trigger::after {
+    transform: rotate(180deg);
+}
+
+/* Grid spacing specifically inside the expanded drawers */
+.drawer-padding {
+    padding: 30px;
+}
+
+/* ==========================================================================
+   8. INDIVIDUAL PERSONNEL CARD ASSETS
+   ========================================================================== */
+.commander-card {
+    background: rgba(20, 24, 38, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.commander-img {
+    width: 100%;
+    background-color: #020204;
+    border-bottom: 1px solid rgba(102, 0, 255, 0.1);
+}
+
+/* Fixed-height cropping is reserved for the small roster and ghost cards. */
+.commander-img:not(.dossier-image) {
+    height: 260px;
+    object-fit: cover;
+}
+
+/* Full dossier artwork should never be cropped like the smaller roster cards. */
+.panel-center > img.commander-img.dossier-image {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+    object-fit: contain !important;
+    object-position: center top !important;
+    flex: 0 0 auto;
+    margin-bottom: 15px !important;
+}
+
+.commander-data {
+    padding: 20px;
+}
+
+.commander-rank {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-yin);
+    margin-bottom: 8px;
+}
+
+.energy-metrics {
+    display: flex;
+    gap: 15px;
+    margin: 12px 0;
+    font-size: 0.8rem;
+    border-top: 1px dashed rgba(255, 255, 255, 0.08);
+    padding-top: 12px;
+}
+
+.metric-yin { color: #cc66ff; }
+.metric-yang { color: var(--accent-yang); }
+
+/* ==========================================================================
+   9. ADVANCED MULTI-PANEL DOSSIER INTERFACE
+   ========================================================================== */
+.dossier-dashboard {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 25px;
+    background: rgba(14, 15, 23, 0.7);
+    border: 1px solid rgba(102, 0, 255, 0.2);
+    border-radius: 6px;
+    padding: 25px;
+    margin-bottom: 40px;
+    backdrop-filter: blur(15px);
+}
+
+/* Desktop structural fan-out panel arrangement */
+@media (min-width: 1024px) {
+    .dossier-dashboard {
+        grid-template-columns: 280px 1fr 320px;
+    }
+}
+
+/* Section 1: Left Panel */
+.panel-left {
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    padding-right: 20px;
+}
+.dossier-name {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(102, 0, 255, 0.6);
+    line-height: 1.2;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+/* Section 2: Center Panel (Specifications) */
+.panel-center {
+    padding: 0 15px;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+.dossier-quote {
+    font-style: italic;
+    color: var(--text-primary);
+    border-left: 2px solid var(--accent-alert);
+    padding-left: 15px;
+    margin-bottom: 20px;
+    font-size: 1.05rem;
+}
+.bio-specs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    background: rgba(4, 5, 8, 0.4);
+    padding: 20px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+/* Section 3: Right Panel (Close-up Logs) */
+.panel-right {
+    border-left: 1px solid rgba(255, 255, 255, 0.05);
+    padding-left: 20px;
+}
+.lore-log-item {
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    background: rgba(102, 0, 255, 0.03);
+    padding: 10px 15px;
+    border-radius: 4px;
+    border-left: 2px solid var(--accent-yin);
+}
+.lore-log-item strong {
+    color: var(--accent-yang);
+    display: block;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+
+/* Section 4: Bottom Panel Footnotes */
+.panel-bottom {
+    grid-column: 1 / -1;
+    border-top: 1px dashed rgba(102, 0, 255, 0.2);
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.motto-purple {
+    font-family: 'Georgia', serif;
+    font-size: 1.4rem;
+    font-style: italic;
+    color: #cc66ff;
+    text-shadow: 0 0 8px rgba(204, 102, 255, 0.3);
+}
+.thumbnail-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 10px;
+}
+.thumb-box {
+    aspect-ratio: 1;
+    background: #020204;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+}
+
+/* ==========================================================================
+   10. CLASSIFIED FIREWALL & GLITCH ANIMS
+   ========================================================================== */
+.firewall-terminal {
+    max-width: 500px;
+    margin: 80px auto;
+    background: rgba(15, 5, 10, 0.8);
+    border: 1px solid var(--accent-alert);
+    border-radius: 4px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(255, 0, 60, 0.15);
+    position: relative;
+}
+
+/* Severe blinking alert message */
+.security-alert-text {
+    color: var(--accent-alert);
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    animation: terminalBlink 1s infinite steps(2);
+}
+
+@keyframes terminalBlink {
+    0%, 100% { opacity: 1; text-shadow: 0 0 10px var(--accent-alert); }
+    50% { opacity: 0.3; text-shadow: none; }
+}
+
+/* Glitch Terminal Input Fields */
+.terminal-input {
+    width: 100%;
+    background: #020204;
+    border: 1px solid rgba(255, 0, 60, 0.3);
+    color: #ffffff;
+    padding: 12px;
+    font-family: monospace;
+    font-size: 1rem;
+    text-align: center;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    outline: none;
+    letter-spacing: 4px;
+    transition: border-color 0.3s ease;
+}
+
+.terminal-input:focus {
+    border-color: var(--accent-alert);
+    box-shadow: 0 0 10px rgba(255, 0, 60, 0.2);
+}
+
+/* Screen shake execution class */
+.glitch-vibrate {
+    animation: screenVibrate 0.25s infinite linear;
+}
+
+@keyframes screenVibrate {
+    0% { transform: translate(0, 0) huerotate(0deg); }
+    20% { transform: translate(-3px, 2px) cubic-bezier(0.1, 0.9, 0.2, 1); }
+    40% { transform: translate(3px, -1px); filter: hue-rotate(90deg) contrast(1.5); }
+    60% { transform: translate(-2px, -2px); }
+    80% { transform: translate(2px, 2px); filter: invert(0.1); }
+    100% { transform: translate(0, 0); }
+}
+
+/* Exclusive gallery stays hidden until the correct clearance key is entered. */
+.exclusive-vault {
+    display: none;
+}
+
+.exclusive-gallery-group + .exclusive-gallery-group {
+    margin-top: 48px;
+}
+
+.exclusive-gallery-heading {
+    margin-bottom: 18px;
+    color: var(--accent-alert);
+    font-size: 0.9rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.exclusive-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 22px;
+    width: 100%;
+}
+
+.exclusive-gallery-item {
+    margin: 0;
+    overflow: hidden;
+    background: rgba(14, 15, 23, 0.8);
+    border: 1px solid rgba(166, 77, 255, 0.35);
+    border-radius: 5px;
+}
+
+.exclusive-gallery-button {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    background: #020204;
+    border: 0;
+    color: inherit;
+    cursor: zoom-in;
+    font: inherit;
+}
+
+.exclusive-gallery-button:focus-visible {
+    outline: 2px solid var(--accent-yang);
+    outline-offset: -4px;
+}
+
+.exclusive-gallery-item img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: none;
+    object-fit: contain;
+    background: #020204;
+}
+
+.exclusive-gallery-item figcaption {
+    padding: 14px 16px;
+    color: var(--accent-yang);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-align: center;
+    border-top: 1px solid rgba(102, 0, 255, 0.2);
+}
+
+body.exclusive-lightbox-open {
+    overflow: hidden;
+}
+
+.exclusive-lightbox[hidden] {
+    display: none;
+}
+
+.exclusive-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+    background: rgba(1, 1, 5, 0.94);
+    backdrop-filter: blur(10px);
+}
+
+.exclusive-lightbox-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 94vw;
+    max-height: 92vh;
+}
+
+.exclusive-lightbox-image {
+    display: block;
+    width: auto;
+    max-width: 94vw;
+    height: auto;
+    max-height: 82vh;
+    object-fit: contain;
+    background: #020204;
+    border: 1px solid rgba(166, 77, 255, 0.7);
+    box-shadow: 0 0 45px rgba(102, 0, 255, 0.35);
+}
+
+.exclusive-lightbox-caption {
+    margin-top: 14px;
+    color: var(--accent-yang);
+    font-size: 0.9rem;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.exclusive-lightbox-close {
+    position: fixed;
+    top: 18px;
+    right: 24px;
+    z-index: 1;
+    width: 48px;
+    height: 48px;
+    color: #ffffff;
+    background: rgba(14, 15, 23, 0.9);
+    border: 1px solid var(--accent-alert);
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.exclusive-lightbox-close:hover,
+.exclusive-lightbox-close:focus-visible {
+    color: var(--accent-alert);
+    box-shadow: 0 0 18px rgba(255, 0, 60, 0.35);
+    outline: none;
+}
+
+@media (max-width: 680px) {
+    .exclusive-gallery {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 14px;
+    }
+
+    .exclusive-lightbox {
+        padding: 16px;
+    }
+
+    .exclusive-lightbox-close {
+        top: 10px;
+        right: 12px;
+    }
+}
